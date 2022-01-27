@@ -8,6 +8,7 @@ require("@tenderly/hardhat-tenderly");
 
 require("hardhat-deploy");
 require("hardhat-gas-reporter");
+require('hardhat-abi-exporter');
 
 require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-etherscan");
@@ -51,6 +52,16 @@ module.exports = {
    * an estimate of gas for contract deployments and function calls
    * More here: https://hardhat.org/plugins/hardhat-gas-reporter.html
    */
+   abiExporter: [
+    {
+      path: './abi/pretty',
+      pretty: true,
+    },
+    {
+      path: './abi/ugly',
+      pretty: false,
+    },
+  ],
   gasReporter: {
     currency: "USD",
     coinmarketcap: process.env.COINMARKETCAP || null,
@@ -85,10 +96,10 @@ module.exports = {
     //   url: `https://mainnet.infura.io/v3/${process.env.MAINNET_INFURA_KEY}`,
     //   accounts: [`${process.env.MAINNET_DEPLOYER_PRIV_KEY}`],
     // },
-    // ropsten: {
-    //   url: `https://ropsten.infura.io/v3/${process.env.ROPSTEN_INFURA_KEY}`,
-    //   accounts: [`${process.env.ROPSTEN_DEPLOYER_PRIV_KEY}`],
-    // },
+     ropsten: {
+       url: `https://ropsten.infura.io/v3/${process.env.EXAMPLE_INFURA_KEY}`,
+       accounts: [`${process.env.ROPSTEN_PRIV_KEY}`],
+     },
     // goerli: {
     //   url: `https://goerli.infura.io/v3/${process.env.GOERLI_INFURA_KEY}`,
     //   accounts: [`${process.env.GOERLI_DEPLOYER_PRIV_KEY}`],
@@ -127,7 +138,7 @@ module.exports = {
         mnemonic: mnemonic(),
       },
     },
-    ropsten: {
+    /*ropsten: {
       url: "https://ropsten.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
 
       //      url: "https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXXXXXXXX/eth/ropsten",// <---- YOUR MORALIS ID! (not limited to infura)
@@ -135,7 +146,7 @@ module.exports = {
       accounts: {
         mnemonic: mnemonic(),
       },
-    },
+    },*/
     goerli: {
       url: "https://goerli.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
 
@@ -253,9 +264,7 @@ module.exports = {
       url: "https://api.avax-test.network/ext/bc/C/rpc",
       gasPrice: 225000000000,
       chainId: 43113,
-      accounts: {
-        mnemonic: mnemonic(),
-      },
+      accounts: [`${process.env.avaxTestnetKey}`],
     },
     mainnetAvalanche: {
       url: "https://api.avax.network/ext/bc/C/rpc",
@@ -294,7 +303,7 @@ module.exports = {
         },
       },
       {
-        version: "0.6.7",
+        version: "0.8.0",
         settings: {
           optimizer: {
             enabled: true,

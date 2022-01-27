@@ -16,18 +16,25 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
   const chainId = await getChainId();
+  //prov = ethers.getDefaultProvider();
+
+
+  let balance = await ethers.provider.getBalance(deployer);
+  console.log(balance);
+  console.log(`Deployer Starting Balance: ${balance.toString()}`);
 
   await deploy("Occuland", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
-    args: [ deployer ],
+    args: [ '0xb92bC1F5456e1E7B2971450D36FD2eBE73eeF70B' ],
     log: true,
   });
 
   // Getting a previously deployed contract
-  const contract = await ethers.getContract("Occuland", deployer);
+  //const contract = await ethers.getContract("Occuland", deployer);
 
-  console.log(contract);
+  balance = await ethers.provider.getBalance(deployer);
+  console.log(`Deployer Ending Balance: ${balance.toString()})`);
   /*  await YourContract.setPurpose("Hello");
   
     To take ownership of yourContract using the ownable library uncomment next line and add the 
@@ -63,7 +70,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
 
   // Verify your contracts with Etherscan
   // You don't want to verify on localhost
-  if (chainId !== localChainId) {
+  /*if (chainId !== localChainId) {
     // wait for etherscan to be ready to verify
     await sleep(15000);
     await run("verify:verify", {
@@ -71,6 +78,6 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
       contract: "contracts/YourContract.sol:YourContract",
       contractArguments: [],
     });
-  }
+  }*/
 };
 module.exports.tags = ["YourContract"];

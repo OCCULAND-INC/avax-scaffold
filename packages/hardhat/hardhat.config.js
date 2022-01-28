@@ -8,7 +8,7 @@ require("@tenderly/hardhat-tenderly");
 
 require("hardhat-deploy");
 require("hardhat-gas-reporter");
-require('hardhat-abi-exporter');
+require("hardhat-abi-exporter");
 
 require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-etherscan");
@@ -52,19 +52,23 @@ module.exports = {
    * an estimate of gas for contract deployments and function calls
    * More here: https://hardhat.org/plugins/hardhat-gas-reporter.html
    */
-   abiExporter: [
+  abiExporter: [
     {
-      path: './abi/pretty',
+      path: "./abi/pretty",
       pretty: true,
     },
     {
-      path: './abi/ugly',
+      path: "./abi/ugly",
       pretty: false,
     },
   ],
   gasReporter: {
+    enabled: true,
     currency: "USD",
-    coinmarketcap: process.env.COINMARKETCAP || null,
+    coinmarketcap: process.env.COINMARKETCAP,
+    token: "AVAX",
+    gasPriceApi:
+      "https://api.snowtrace.io/api?module=proxy&action=eth_gasPrice",
   },
 
   // if you want to deploy to a testnet, mainnet, or xdai, you will need to configure:
@@ -96,10 +100,10 @@ module.exports = {
     //   url: `https://mainnet.infura.io/v3/${process.env.MAINNET_INFURA_KEY}`,
     //   accounts: [`${process.env.MAINNET_DEPLOYER_PRIV_KEY}`],
     // },
-     ropsten: {
-       url: `https://ropsten.infura.io/v3/${process.env.EXAMPLE_INFURA_KEY}`,
-       accounts: [`${process.env.ROPSTEN_PRIV_KEY}`],
-     },
+    ropsten: {
+      url: `https://ropsten.infura.io/v3/${process.env.EXAMPLE_INFURA_KEY}`,
+      accounts: [`${process.env.ROPSTEN_PRIV_KEY}`],
+    },
     // goerli: {
     //   url: `https://goerli.infura.io/v3/${process.env.GOERLI_INFURA_KEY}`,
     //   accounts: [`${process.env.GOERLI_DEPLOYER_PRIV_KEY}`],
@@ -138,7 +142,7 @@ module.exports = {
         mnemonic: mnemonic(),
       },
     },
-    /*ropsten: {
+    /* ropsten: {
       url: "https://ropsten.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
 
       //      url: "https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXXXXXXXX/eth/ropsten",// <---- YOUR MORALIS ID! (not limited to infura)
@@ -146,7 +150,7 @@ module.exports = {
       accounts: {
         mnemonic: mnemonic(),
       },
-    },*/
+    }, */
     goerli: {
       url: "https://goerli.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
 

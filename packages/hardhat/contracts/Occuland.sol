@@ -75,7 +75,7 @@ contract Occuland is
         _tokenIdCounter.increment();
         uint256 tokenId = _tokenIdCounter.current();
         _safeMint(to, tokenId);
-        _setTokenURI(tokenId, assetId);
+        _setTokenURI(tokenId, assetURI);
         initLeasingTerms(to, tokenId, assetId, assetURI, 0, 0, false);
         emit MintedAsset(to, tokenId, assetId);
     }
@@ -127,15 +127,16 @@ contract Occuland is
 
     function occupyAsset(
         uint256 _tokenId,
-        uint256 _period,
+        //uint256 _period,
         string memory _newURI
     ) public payable {
         address owner = ownerOf(_tokenId);
+        string memory _assetId = tokenLeasingInfo[owner][_tokenId].assetId;
         require(
             tokenLeasingInfo[owner][_tokenId].rented == false,
             "asset is already rented"
         );
-        require(
+        /*require(
             tokenLeasingInfo[owner][_tokenId].minimumRentalPeriod <= _period,
             "does not meet mimimum rental period"
         );
@@ -144,12 +145,27 @@ contract Occuland is
                 tokenLeasingInfo[owner][_tokenId].minimumRentalPeriod <=
                 msg.value,
             "does not meet rental price"
-        );
+        );*/
+        tokenLeasingInfo[owner][_tokenId].rented = true;
+        tokenLeasingInfo[owner][_tokenId].assetURI = _newURI;
+        setTokenURI(_tokenId, _newURI);
+        emit OccupyAsset(owner, msg.sender, _tokenId, _assetId);
+    }
 
+    function releaseAsset(uint256 _tokenId, string memory _newURI)
+        public
+        onlyRole(MINTER_ROLE)
+    {
+        address owner = ownerOf(_tokenId);
+        require(
+            tokenLeasingInfo[owner][_tokenId].rented == true,
+            "asset is already released"
+        );
+        string memory _assetId = tokenLeasingInfo[owner][_tokenId].assetId;
         tokenLeasingInfo[owner][_tokenId].rented = true;
         tokenLeasingInfo[owner][_tokenId].assetURI = _newURI;
 
-        setTokenURI(_tokenId, _newURI);
+        emit ReleaseAsset(owner, msg.sender, _tokenId, _assetId);
     }
 
     function _beforeTokenTransfer(
